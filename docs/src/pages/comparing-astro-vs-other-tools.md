@@ -3,39 +3,51 @@ layout: ~/layouts/Main.astro
 title: Comparing Astro
 ---
 
-We often get asked the question, "How does Astro compare to my favorite site builder, ________?" This guide was written to help answer that question for several popular Astro alternatives.
+We often get asked the question, "How does Astro compare to my favorite site builder, ________?" This guide was written to help answer that question for several popular site builders and Astro alternatives.
 
 If you don't see your favorite site builder listed here, [ask us in Discord.](https://astro.build/chat)
 
+## Project Status
+
+A quick note on project maturity: **Astro is still in beta.** Many of the tools listed here are much more mature. Some predate Astro by over 12 years!
+
+A few features are still missing from Astro, and serveral APIs are not yet finalized. However, the project is considered stable from a bug perspective and several production websites have already been built using Astro. This is an important point to consider when choosing Astro.
+
 ## Docusaurus vs. Astro
 
-**[Docusaurus](https://docusaurus.io/)** is a popular open source framework for building documentation websites. Docusaurus uses React for HTML generation while Astro supports HTML, Astro components and most popular web frameworks including React. 
+[Docusaurus](https://docusaurus.io/) is a popular documentation website builder. Docusaurus uses React to generate your website UI while Astro supports React, Vue.js, Svelte, and raw HTML templating.
 
-Docusaurus was designed specifically for documentation websites, and may have features for documentation websites that Astro does not. Astro was designed for any static website, which includes most documentation websites. Astro has all that you need to build fast documentation websites, including Markdown support and file-based routing.
-
-To build a documentation website with Astro, check out our official [docs](https://github.com/snowpackjs/astro/tree/main/examples/docs) starter template. This website was built using this same template!
+Docusaurus was designed to build documentation websites and has some built-in, documentation-specific website features that Astro does not. Instead, Astro offers documentation-specific features through an official [`docs`](https://github.com/snowpackjs/astro/tree/main/examples/docs) theme that you can use for your site. This website was built using that template!
 
 #### Comparing Docusaurus vs. Astro Performance
 
-In almost all cases, a website built with Astro will load significantly faster than a website built with Docusaurus. This is because Astro uses Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. Docusaurus websites don't support this, and instead load your entire JavaScript application in the browser. The result is a slower page load and worse Lighthouse scores than a similar website built with Astro. 
+In almost all cases, Astro websites will load significantly faster than Docusaurus websites. This is because Astro automatically strips unnecessary JavaScript from the page, hydrating only the individual components that need it. This feature is called [partial hydration](/core-concepts/component-hydration).
 
-Case Study: [docusaurus.io/docs](https://docusaurus.io/docs) (built with Docusaurus) loads **238kb** of JavaScript on first load, and scores a Lighthouse performance score of [26 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocusaurus.io%2Fdocs). This website, (built with Astro) loads only **9.3kb** of JavaScript (96% less) and scores a Lighthouse performance score of [94 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started). 
+Docusaurus doesn't support partial hydration, and instead forces the user to load your entire JavaScript application in the browser. This creates a slower page load and worse performance for your website. There is no way to disable this behavior in Docusaurus.
+
+#### Case Study: Building a Documentation Website
+
+[docusaurus.io/docs](https://docusaurus.io/docs) is the official Docusaurus documentation website, built with Docusaurus. The website offers a similar enough design and featureset to compare against the official Astro documentation website. This gives us a ***rough, real-world*** comparison between the two site builders.
+
+- **Docusaurus performance score**: 26 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocusaurus.io%2Fdocs)
+- **Astro performance score**: 94 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started)
+
+One big reason behind this performance difference is Astro's smaller JavaScript payload: [docusaurus.io/docs](https://docusaurus.io/docs) loads **238kb** of JavaScript on first load while [docs.astro.build](https://docs.astro.build) only loads **9.3kb**  (96% less JavaScript, overall).
 
 
 ## Eleventy vs. Astro
 
-[Eleventy](https://www.11ty.dev/) is a popular static site builder, powered by Node.js. It is very similar to Astro, and conceptually aligned with Astro's "minimize client-side JavaScript" approach to web development.
+[Eleventy](https://www.11ty.dev/) is a popular static site builder, powered by Node.js.
 
-Eleventy supports several older [templating languages](https://www.11ty.dev/docs/languages/) for HTML: Nunjucks, Liquid, Pug, EJS, and others. Astro lets you write HTML using modern UI component libraries (React, Preact, Vue, Svelte) or a custom component syntax that is similar to HTML + JSX. Eleventy does not currently support using modern UI component libraries for HTML templating.
-
-Eleventy offers "zero client-side JavaScript" by not including any JavaScript on your site by default. By making JavaScript opt-in, Eleventy sites can be written with little to no JavaScript. However, when you do need client-side JavaScript, it's up to you to set up your own build pipeline. This can be time consuming, and is only as optimized as what you can build yourself with Webpack, Snowpack, or Vite.
-
-By contrast, Astro has built-in support for Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. In production, Astro automatically optimizes your included component JavaSript bundles for you. This gives you built-in support to include individual JavaScript components on the page, without any effort on your part.
+Eleventy uses several [older HTML templating languages](https://www.11ty.dev/docs/languages/) for HTML templating: Nunjucks, Liquid, Pug, EJS, and others. Astro lets you create pages using your favorite UI component libraries (React, Preact, Vue, Svelte, and others) or a built-in component syntax that is similar to HTML/JSX. Eleventy does not support using modern UI components for HTML templating.
 
 #### Comparing Eleventy vs. Astro Performance
 
-Eleventy has few opinions about what you build, so it's difficult to compare generally. Because Eleventy includes zero JavaScript by default, it is possible for an Eleventy website to be as fast as an Astro website. However, because you are responsible for building your own build pipeline for any JavaScript that you include on the page, most Eleventy websites will not be as well-optimized as Astro websites.
+Conceptually, Eleventy is aligned with Astro's "minimal client-side JavaScript" approach to web development. Eleventy and Astro both offer similar, zero-JavaScript-by-default performance baselines. 
 
+Eleventy achieves this by pushing you to avoid JavaScript entirely. Eleventy sites are often written with little to no JavaScript at all. This becomes an issue when you do need client-side JavaScript. It is up to you to create your own asset build pipeline for Eleventy. This can be time consuming and forces you to set up bundling, minification, and other complex optimizations yourself.
+
+By contrast, Astro automatically builds your client-side JavaScript & CSS for you. Astro automatically strips unnecessary JavaScript from the page, hydrating only the individual components that need it. This feature is called [partial hydration](/core-concepts/component-hydration). While it is possible to achieve this yourself in Eleventy, Astro offers it built in by default.
 
 <!-- 
 ## Gatsby vs. Astro
@@ -53,84 +65,105 @@ Eleventy has few opinions about what you build, so it's difficult to compare gen
 
 [Hugo](https://gohugo.io/) is a popular static site generator, powered by Go. 
 
-Hugo supports an custom [templating languages](https://gohugo.io/templates/introduction/) for HTML. Astro lets you write HTML using modern UI component libraries (React, Preact, Vue, Svelte) or a custom component syntax that is similar to HTML + JSX. Hugo does not support using modern UI component libraries for HTML templating.
+Hugo uses a custom [templating languages](https://gohugo.io/templates/introduction/) for HTML templating. Astro lets you create pages using your favorite UI component libraries (React, Preact, Vue, Svelte, and others) or a built-in component syntax that is similar to HTML/JSX. Hugo does not support using modern UI components for HTML templating.
 
-Hugo offers "zero client-side JavaScript" by not including any JavaScript on your site by default. By making JavaScript opt-in, Hugo sites can be written with little to no JavaScript. However, when you do need client-side JavaScript, it's up to you to set up your own build pipeline. This can be time consuming, and is only as optimized as what you can build yourself with Webpack, Snowpack, or Vite.
-
-By contrast, Astro has built-in support for Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. In production, Astro automatically optimizes your included component JavaSript bundles for you. This gives you built-in support to include individual JavaScript components on the page, without any effort on your part.
 
 #### Comparing Hugo vs. Astro Performance
 
-Hugo has few opinions about what you build, so it's difficult to compare generally. Because Hugo includes zero JavaScript by default, it is possible for an Hugo website to be as fast as an Astro website. However, because you are responsible for building your own build pipeline for any JavaScript that you include on the page, most Hugo websites will not be as well-optimized as Astro websites.
+Conceptually, Hugo is aligned with Astro's "minimal client-side JavaScript" approach to web development. Hugo and Astro both offer similar, zero-JavaScript-by-default performance baselines. 
 
+Both Hugo and Astro offer built-in support for building, bundling and minifying JavaScript. Astro automatically strips unnecessary JavaScript from the page, hydrating only the individual components that need it. This feature is called [partial hydration](/core-concepts/component-hydration). While it is possible to achieve this yourself in Hugo, Astro offers it built in by default.
 
 ## Jekyll vs. Astro
 
 [Jekyll](https://jekyllrb.com/) is a popular static site generator, powered by Ruby.
 
-Jekyll supports an older [templating languages](https://jekyllrb.com/docs/liquid/) for HTML called Liquid. Astro lets you write HTML using modern UI component libraries (React, Preact, Vue, Svelte) or a custom component syntax that is similar to HTML + JSX. Jekyll does not support using modern UI component libraries for HTML templating.
-
-Jekyll offers "zero client-side JavaScript" by not including any JavaScript on your site by default. By making JavaScript opt-in, Jekyll sites can be written with little to no JavaScript. However, when you do need client-side JavaScript, it's up to you to set up your own build pipeline. This can be time consuming, and is only as optimized as what you can build yourself with Webpack, Snowpack, or Vite.
-
-By contrast, Astro has built-in support for Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. In production, Astro automatically optimizes your included component JavaSript bundles for you. This gives you built-in support to include individual JavaScript components on the page, without any effort on your part.
+Jekyll uses an older [templating languages](https://jekyllrb.com/docs/liquid/) for HTML templating called Liquid. Astro lets you create pages using your favorite UI component libraries (React, Preact, Vue, Svelte, and others) or a built-in component syntax that is similar to HTML/JSX. Jekyll does not support using modern UI components for HTML templating.
 
 #### Comparing Jekyll vs. Astro Performance
 
-Jekyll has few opinions about what you build, so it's difficult to compare generally. Because Jekyll includes zero JavaScript by default, it is possible for an Jekyll website to be as fast as an Astro website. However, because you are responsible for building your own build pipeline for any JavaScript that you include on the page, most Jekyll websites will not be as well-optimized as Astro websites.
+Conceptually, Jekyll is aligned with Astro's "minimal client-side JavaScript" approach to web development. Jekyll and Astro both offer similar, zero-JavaScript-by-default performance baselines. 
 
+Jekyll achieves this by pushing you to avoid JavaScript entirely. Jekyll sites are often written with little to no JavaScript at all, and instead promote server-side HTML rendering. This becomes an issue when you do need client-side JavaScript. It is up to you to create your own build pipeline for Jekyll. This can be time-consuming and forces you to set up bundling, minification, and other optimizations yourself.
 
+By contrast, Astro automatically builds your client-side JavaScript for you. Astro only sends the bare minimum amount of JavaScript to the browser, minified, bundled and optimized for production. While it is possible to achieve this yourself in Jekyll, with Astro this is built in by default.
 
 
 ## Next.js vs. Astro
 
-[Next.js](https://nextjs.org/) is a popular website & application framework for React. Next.js uses React for HTML generation while Astro supports HTML, Astro components and most popular web frameworks (including React). 
+[Next.js](https://nextjs.org/) is a popular website & application framework for React. 
 
-Next.js was designed to build any kind of website, but does best with highly dynamic websites (like Gmail or Facebook). Astro was also designed to build any kind of website, but does best with highly static websites (like content and eCommerce websites).
+Next.js uses React for HTML templating. Astro lets you create pages using your favorite UI component libraries (React, Preact, Vue, Svelte, and others) or a built-in component syntax that is similar to HTML/JSX. 
+
+Both Next.js and Astro were designed to build any kind of website. Next.js does best with highly dynamic websites (like dashboards and inboxes) while Astro does best with highly static websites (like content and eCommerce websites).
 
 Next.js supports both Static Site Generation (SSG) and Server-Side Rendering (SSR). Today, Astro only supports Static Site Generation (SSG).
 
-
 #### Comparing Next.js vs. Astro Performance
 
-In almost all cases, a website built with Astro will load significantly faster than a website built with Next.js. This is because Astro uses Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. Next.js websites don't support this, and instead load your entire JavaScript application in the browser. The result is a slower page load and worse Lighthouse scores than a similar website built with Astro. 
+In almost all cases, Astro websites will load significantly faster than Next.js websites. This is because Astro automatically strips unnecessary JavaScript from the page, hydrating only the individual components that need it. This feature is called [partial hydration](/core-concepts/component-hydration).
 
-Next.js has [experimental support](https://piccalil.li/blog/new-year-new-website/#heading-no-client-side-react-code) for fully-static, zero-JavaScript pages. However, there is no planned support for hydrating individual components on the page. This leaves you with an all-or-nothing limitation.
+Next.js doesn't support partial hydration, and instead forces the user to load your entire JavaScript application in the browser. This creates a slower page load and worse performance for your website. Next.js has [experimental support](https://piccalil.li/blog/new-year-new-website/#heading-no-client-side-react-code) for fully-static, zero-JavaScript pages. However, there is no planned support for hydrating individual components on the page. This leaves you with an all-or-nothing limitation.
 
 Next.js has great built-in image optimizations, which could make Next.js a better choice for some image-heavy websites.
 
-Case Study: [nextjs.org/docs](https://nextjs.org/docs/getting-started) (built with Next.js) loads **463kb** of JavaScript on first load, and scores a Lighthouse performance score of [59 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fnextjs.org%2Fdocs%2Fgetting-started). This website, (built with Astro) loads only **9.3kb** of JavaScript (98% less) and scores a Lighthouse performance score of [94 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started). 
+#### Case Study: Building a Documentation Website
+
+[nextjs.org/docs](https://nextjs.org/docs/getting-started) is the official Next.js documentation website,  built with Next.js. The website offers a similar enough design and featureset to compare against the official Astro documentation website. This gives us a ***rough, real-world*** comparison between the two site builders for this common use-case. 
+
+- **Next.js performance score**: 59 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fnextjs.org%2Fdocs%2Fgetting-started)
+- **Astro performance score**: 94 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started)
+
+One big reason behind this performance difference is Astro's smaller JavaScript payload: [nextjs.org/docs](https://nextjs.org/docs/getting-started) loads **463kb** of JavaScript on first load while [docs.astro.build](https://docs.astro.build) only loads **9.3kb**  (98% less JavaScript, overall).
+
+
+
 
 
 ## Nuxt vs. Astro
 
-[Nuxt](https://nuxtjs.org/) is a popular website & application framework for Vue. Nuxt uses Vue for HTML generation while Astro supports HTML, Astro components and most popular web frameworks (including Vue). 
+[Nuxt](https://nextjs.org/) is a popular website & application framework for Vue. 
 
-Nuxt was designed to build any kind of website, but does best with highly dynamic websites (like Gmail or Facebook). Astro was also designed to build any kind of website, but does best with highly static websites (like content and eCommerce websites).
+Nuxt uses Vue for HTML templating. Astro lets you create pages using your favorite UI component libraries (React, Preact, Vue, Svelte, and others) or a built-in component syntax that is similar to HTML/JSX. 
+
+Both Nuxt and Astro were designed to build any kind of website. Nuxt does best with highly dynamic websites (like dashboards and inboxes) while Astro does best with highly static websites (like content and eCommerce websites).
 
 Nuxt supports both Static Site Generation (SSG) and Server-Side Rendering (SSR). Today, Astro only supports Static Site Generation (SSG).
 
-
 #### Comparing Nuxt vs. Astro Performance
 
-In almost all cases, a website built with Astro will load significantly faster than a website built with Nuxt. This is because Astro uses Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. Nuxt websites don't support this, and instead load your entire JavaScript application in the browser. The result is a slower page load and worse Lighthouse scores than a similar website built with Astro. 
+In almost all cases, Astro websites will load significantly faster than Nuxt websites. This is because Astro automatically strips unnecessary JavaScript from the page, hydrating only the individual components that need it. This feature is called [partial hydration](/core-concepts/component-hydration).
 
-Next.js has great built-in image optimizations, which could make Next.js a better choice for some image-heavy websites.
+Nuxt doesn't support partial hydration, and instead forces the user to load your entire JavaScript application in the browser. This creates a slower page load and worse performance for your website. There is no way to disable this behavior in Nuxt.
 
-Case Study: [nuxtjs.org/docs](https://nuxtjs.org/docs/2.x/get-started/installation) (built with Nuxt) loads **469kb** of JavaScript on first load, and scores a Lighthouse performance score of [48 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fnuxtjs.org%2Fdocs%2F2.x%2Fget-started%2Finstallation). This website, (built with Astro) loads only **9.3kb** of JavaScript (98% less) and scores a Lighthouse performance score of [94 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started). 
+Nuxt has great built-in image optimizations, which could make Nuxt a better choice for some image-heavy websites.
 
+#### Case Study: Building a Documentation Website
 
+[nuxtjs.org/docs](https://nuxtjs.org/docs/2.x/get-started/installation) is the official Nuxt documentation website, built with Nuxt. The website offers a similar enough design and featureset to compare against the official Astro documentation website. This gives us a ***rough, real-world*** comparison between the two site builders for this common use-case. 
+
+- **Nuxt performance score**: 48 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fnuxtjs.org%2Fdocs%2F2.x%2Fget-started%2Finstallation)
+- **Astro performance score**: 94 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started)
+
+One big reason behind this performance difference is Astro's smaller JavaScript payload: [nuxtjs.org/docs](https://nuxtjs.org/docs/2.x/get-started/installation) loads **469kb** of JavaScript on first load while [docs.astro.build](https://docs.astro.build) only loads **9.3kb**  (98% less JavaScript, overall).
 
 ## VuePress vs. Astro
 
-**VuePress** is a popular documentation platform, powered by Vue.js. VuePress uses Vue for HTML generation while Astro supports HTML, Astro components and most popular web frameworks (including Vue). 
+[VuePress](https://vuepress.vuejs.org/guide/) is a popular documentation website builder. VuePress uses Vue.js to generate your website UI while Astro supports React, Vue.js, Svelte, and raw HTML templating.
 
-VuePress was designed specifically for documentation websites, and may have features for documentation websites that Astro does not. Astro was designed for any static website, which includes most documentation websites. Astro has all that you need to build fast documentation websites, including Markdown support and file-based routing.
+VuePress was designed to build documentation websites and has some built-in, documentation-specific website features that Astro does not. Instead, Astro offers documentation-specific features through an official [`docs`](https://github.com/snowpackjs/astro/tree/main/examples/docs) theme that you can use for your site. This website was built using that template!
 
-To build a documentation website with Astro, check out our official [docs](https://github.com/snowpackjs/astro/tree/main/examples/docs) starter template. This website was built using this same template!
+#### Comparing VuePress vs. Astro Performance
 
-#### VuePress vs. Astro Performance
+In almost all cases, Astro websites will load significantly faster than VuePress websites. This is because Astro automatically strips unnecessary JavaScript from the page, hydrating only the individual components that need it. This feature is called [partial hydration](/core-concepts/component-hydration).
 
-In almost all cases, a website built with Astro will load significantly faster than a website built with VuePress. This is because Astro uses Partial Hydration and Island Architecture to only load the bare minimum amount of JavaScript in the browser. VuePress websites don't support this, and instead load your entire JavaScript application in the browser. The result is a slower page load and worse Lighthouse scores than a similar website built with Astro. 
+VuePress doesn't support partial hydration, and instead forces the user to load your entire JavaScript application in the browser. This creates a slower page load and worse performance for your website. There is no way to disable this behavior in VuePress.
 
-Case Study: [vuepress.vuejs.org/guide/](https://vuepress.vuejs.org/guide/) (built with VuePress) loads **166kb** of JavaScript on first load, and scores a Lighthouse performance score of [63 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fvuepress.vuejs.org%2Fguide%2F). This website, (built with Astro) loads only **9.3kb** of JavaScript (94% less) and scores a Lighthouse performance score of [94 out of 100](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started). 
+#### Case Study: Building a Documentation Website
 
+[vuepress.vuejs.org](https://vuepress.vuejs.org/guide/) is the official VuePress documentation website,  built with VuePress. The website offers a similar enough design and featureset to compare against the official Astro documentation website. This gives us a ***rough, real-world*** comparison between the two site builders for this common use-case. 
+
+- **Vuepress performance score**: 63 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fvuepress.vuejs.org%2Fguide%2F)
+- **Astro performance score**: 94 out of 100 [(full audit)](https://lighthouse-dot-webdotdevsite.appspot.com//lh/html?url=https%3A%2F%2Fdocs.astro.build%2Fgetting-started)
+
+One big reason behind this performance difference is Astro's smaller JavaScript payload: [vuepress.vuejs.org](https://vuepress.vuejs.org/guide/) loads **166kb** of JavaScript on first load while [docs.astro.build](https://docs.astro.build) only loads **9.3kb**  (94% less JavaScript, overall).
